@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Tableau JSAPI</title>
+
+		<meta name="description" content="Introduction to Tableau JSAPI">
+		<meta name="author" content="Jessica Chan">
+
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/beige.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Add Tabealu API -->
+		
+		<script src="tableau-2.0.0.min.js" type="text/javascript"></script>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style>
+			.reveal .slide-number {
+				font-size: 0.6em;
+			}
+			.reveal .h6{
+				font-size: 0.4em;
+			}
+		</style>
+
+		<!--other styles-->
+
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+
+	</head>
+    <script type="text/javascript">
+       var viz;
+        console.log("load filter")
+        function initViz2() {
+            var containerDiv = document.getElementById("vizContainer-filter"),
+                url = "https://public.tableau.com/views/RegionalSampleWorkbook/College",
+                options = {
+                    "Academic Year": "",
+                    hideTabs: true
+                };
+            
+            viz = new tableau.Viz(containerDiv, url, options);
+        }
+        
+        function yearFilter(year) {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            if (year === "") {
+                sheet.clearFilterAsync("Academic Year");
+            } else {
+                sheet.applyFilterAsync("Academic Year", year, tableau.FilterUpdateType.REPLACE);
+            }
+        }
+function vizFilter(filterName,filterValue,filterType)
+
+{ var sheet=viz.getWorkbook().getActiveSheet();
+
+ if(sheet.getSheetType() === 'worksheet')
+
+ {   
+     if (filterType === "clear"){
+         sheet.clearFilterAsync(filterName);
+     }
+     sheet.applyFilterAsync(filterName,filterValue,filterType);
+ }
+ else
+ {
+
+   worksheetArray = sheet.getWorksheets();
+   for(var i =0; i < worksheetArray.length; i++)
+   {
+     worksheetArray[i].applyFilterAsync(filterName,filterValue,filterType);
+
+   }
+ }
+}
+
+    </script>
+
+	<body>
+
+		<div class="reveal">
+
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<!-- Insert you slide here -->
+                <section><h4>Filters - Demo</h4>
+                         
+						<body onload="initViz2();">
+						<font size="3"><div id="controls" style="padding:0px;">
+      					 Year: <select id="changeYear" onchange="yearFilter(value);">
+     			       <option value="">All</option>
+   				         <option value="2013">2013</option>
+      		     		 <option value="2014">2014</option>         
+  				      	</select>
+
+  				      <h6 class="runCode" font = "12px">College
+				       <button onclick="vizFilter('College','Engineering','REPLACE')">Engineer</button>
+				       <button onclick="vizFilter('College','Business','REPLACE')">Business</button>
+				       <button onclick="vizFilter('College','Education','REPLACE')">Education</button>
+				       <button onclick="vizFilter('College','','clear')">Clear</button>
+				 </h6></div></font>
+                     <body onload="initViz();">
+    				<div id="vizContainer-filter" style="width:800px; height:400px; overflow:scroll;"></div>
+   					</body>       
+                     <a href= "index.html#/4/2"><button type="button" >Close Window</button> </a>
+					</body>
+
+					</section>
+            </div>
+            </div>
+        
+              
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/reveal.js-menu-master/menu.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>

@@ -25,8 +25,9 @@
 		<!-- Add Tabealu API -->
 		
 		<script src="tableau-2.0.0.min.js" type="text/javascript"></script>
-		<script src="tableau101.js" type="text/javascript"></script>
-		<script src = "tableau201.js" type="text/javascript"></script>
+		<script src="tableau_embed.js" type="text/javascript"></script>
+		
+		<script src = "tableau_filter.js" type="text/javascript"></script>
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -84,17 +85,23 @@
 				<section>
 					
 						<h2>What do you need?</h2>
-						<ul>
+                    <ul>
 							<li>Tableau server: <a href = "https://public.tableau.com/en-us/s/gallery/women-politics-0">tableau Online</a> </li>
 							<li>Webpage (html file): chrome, firefox, safari</li>
 							<li>JavaScript (js file):  embed and interact </li>
 							<li> <a href=" http://onlinehelp.tableau.com/samples/en-us/js_api/tutorial.htm">Tableau JavaScript API Tutorial</a></li>
 						</ul>
+						
 				</section>
 
 				<section>
 					<section>	
-						<h2>Basic embed to Webpage</h2>
+						<h2>Basic Embed to Webpage</h2>
+                        <h5>There are two ways</h5>
+                <ul>
+                          <li>iFrame</li>
+                        <li>JS API</li>
+                        </ul>
 					</section>
 					
 
@@ -115,13 +122,20 @@
 						 
 					</section>
 					<section>
-						<h4>JS API - demo</h4>
-						<div id="tableauViz"></div>
-					</section>
-					<section>
-						<h4>JS API - code</h4>
-						<p>In Java Script: </p>
-
+                        <a href = "demo_embed.html">Embed - Demo</a>
+                    </section>
+                    <section>
+                        <h4>embed - code</h4>
+	           <font size = "4">
+                        <ul>
+                    <li>Create a new Viz object</li>
+                    <li>Pass required id (document.getElementByID) and url</li>
+                    <li>Define view options (hideTabs, hideToolbar)</li>
+                        </ul>
+		
+						
+						<p >In Java Script: </p></font>
+                            
 						<pre><code class="hljs" data-trim contenteditable>
 						
 window.onload= function(){
@@ -137,74 +151,194 @@ window.onload= function(){
 	viz = new tableauSoftware.Viz(vizDiv, vizUrl, vizOptions);    
 
 };
-						
+			
 					
 				</code></pre>
-				<p>In html: </p>
+             <font size = "4">	
+				<p>In html: </p></font>
 
 					<pre><code class="hljs" data-trim contenteditable>
 						
 					<body><div id = "tableauViz"></div></body>
 						
 					</code></pre>
-						 
+				
 					</section>
 				</section>
 
 
 				<!-- Example of nested vertical slides -->
+
 				<section>
-					
-						<h2>Dynamic Load</h2>
-					
+                    <section><h2>Customized Fliter</h2>
+                    <p>Filtering across different sources</p></section>
 					<section>
-
-						<div id="controls" style=" position: top" >
-       					 <button style="width:100px;" onclick="javascript:createViz(-1);">Previous</button>
-      					  <button style="width:100px;" onclick="javascript:createViz(1);">Next</button>
-   						 </div>
+                        <a href = "demo_filter.html">FILTER - DEMO</a>
+                    </section>
+			<section>
+						<h4>filter - code</h4>
+                        <font size = "4">
+                        <ul>
+                            <b>Use Methods:</b>
+                        <li>applyFilterAsync (filtername, category, filterUpdateType) on a Worksheet object</li>
+                        <li>clearFilterAsync (filtername) </li>
+                        </ul>
+                
+    </font>
+                
+                
+                    <font size = "4">  <br/>
+                        In Java Script: </font>
+                        <pre><code class="hljs" data-trim contenteditable>
+        function yearFilter(year) {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            if (year === "") {
+                sheet.clearFilterAsync("Academic Year");
+            } else {
+                sheet.applyFilterAsync("Academic Year", year, tableau.FilterUpdateType.REPLACE);
+            }
+        }
+                        </code></pre>
+                        <font size = "4">In Html: </font>
+                        <pre><code class="hljs" data-trim contenteditable>
+                <h6 class="runCode" font = "12px">College
+				    <button onclick="vizFilter('College','Engineering','REPLACE')">Engineer</button>
+				    <button onclick="vizFilter('College','Business','REPLACE')">Business</button>
+                    <button onclick="vizFilter('College','Education','REPLACE')">Education</button>
+                    <button onclick="vizFilter('College','','clear')">Clear</button>
+				 </h6>
+                        </code></pre>
 					</section>
-						  
-						
-				</section>
-				<section>
-					<section><h2>Cutomized Filter</h2></section>
-					
-					<section><h4>Filters - Demo</h4>
-						<body onload="initViz();">
-						<div id="controls" style="padding:0px;">
-      					 <h6>Year: <select id="changeYear" onchange="yearFilter(value);">
-     			       <option value="">All</option>
-   				         <option value="2013">2013</option>
-      		     		 <option value="2014">2014</option>         
-  				      </select></h6>
 
-  				      <h6 class="runCode" font = "12px">College
-       <button onclick="vizFilter('College','Engineering','REPLACE')">Engineer</button>
-       <button onclick="vizFilter('College','Business','REPLACE')">Business</button>
-       <button onclick="vizFilter('College','Education','REPLACE')">Education</button>
-       <button onclick="vizFilter('College','','clear')">Clear</button>
- </h6></div>
-
-    				<div id="vizContainer" style="width:800px; height:400px;"></div>
-   					
-					</body>
-
-
-					</section>
-					<section><h4>code</h4></section>
 					<section><h4>Types of Filters</h4>
+                        <font size = "4">
+                        <ul>
+                        <li>Apply filters berfore loading the Visualization - Viz options </li>
+                        <li>Apply Filters after loading the visualization - applyFilterAsync</li>
+                        </ul>
+                        </font>
 					<img src="jsapi_filterclass.png" height = "400" width="600">
 					</section>
 
 				</section>
 				<section>
+					<section>
 					<h2>Customized Description</h2>
-				</section>
+					</section>
+                    <section><h4><a href = "demo_selectMarks.html">Select Marks - Demo</a></h4>
+						
+					</section>
+                    <section>
+                        <h4>Select Marks - Code</h4>
+                    <pre><code class="hljs" data-trim contenteditable>
+var viz;
+        
+function initViz() {
+    var containerDiv = document.getElementById("vizContainer"),
+        url = "http://public.tableau.com/views/RegionalSampleWorkbook/College",
+        options = {
+            "Academic Year": "",
+            hideTabs: true,
+            onFirstInteractive: function () {
+                listenToMarksSelection();
+            }
+        };
 
-				<section>
-					<h2>Some other features</h2>
+
+inerDiv, url, options);
+}
+
+//Add event listener to the viz variable
+function listenToMarksSelection() {
+    viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
+}
+
+function onMarksSelection(marksEvent) {
+    return marksEvent.getMarksAsync().then(reportSelectedMarks);
+}
+
+function reportSelectedMarks(marks) {
+    var html = ''; 
+    for (var markIndex = 0; markIndex /< marks.length; markIndex++) {
+        var pairs = marks[markIndex].getPairs();
+        html += "Mark " + markIndex + ":";
+
+        for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+            var pair = pairs[pairIndex];
+            html += "<li> The " + pair.fieldName;
+            html += " is " + pair.formattedValue + "</li>";
+        }
+        html += "</ul>";
+    }
+
+    var infoDiv = document.getElementById('markDetails');
+    infoDiv.innerHTML = html;
+}
+function vizFilter(filterName,filterValue,filterType)
+
+{ var sheet=viz.getWorkbook().getActiveSheet();
+
+if(sheet.getSheetType() === 'worksheet')
+
+{   
+    if (filterType === "clear"){
+        sheet.clearFilterAsync(filterName);
+    }
+    sheet.applyFilterAsync(filterName,filterValue,filterType);
+}
+ else
+ {
+       worksheetArray = sheet.getWorksheets();
+       for(var i =0; i < worksheetArray.length; i++)
+    {
+        worksheetArray[i].applyFilterAsync(filterName,filterValue,filterType);
+
+    }
+}
+}
+
+
+                    </code></pre>
+                    </section>
 				</section>
+                <section>
+					<h2>Some other features</h2>
+                    <section>
+                    <font size = "4">Switch one sheet to another</font>
+                    <pre><code class="hljs" data-trim contenteditable>
+  function switchToTab() {
+    workbook.activateSheetAsync("Storm");}                     
+                    </code></pre>
+                    
+                    <font size = "4"></font>
+				</section>
+                    <section>
+                    <font size = "4">Filters on multiple sheets</font>
+                        <pre><code class="hljs" data-trim contenteditable>
+var dashboard, mapSheet, graphSheet;
+  workbook.activateSheetAsync("GDP per Capita Dashboard")
+    .then(function (sheet) {
+      dashboard = sheet;
+      mapSheet = dashboard.getWorksheets().get("Map of GDP per capita");
+      graphSheet = dashboard.getWorksheets().get("GDP per capita by region");
+      return mapSheet.applyFilterAsync("Region", "Middle East", tableau.FilterUpdateType.REPLACE);
+    })
+    .then(function () {
+      // Do these two steps in parallel since they work on different sheets.
+      mapSheet.applyFilterAsync("YEAR(Date (year))", 2010, tableau.FilterUpdateType.REPLACE);
+      return graphSheet.clearFilterAsync("Date (year)");
+    })
+    .then(function () {
+      return graphSheet.selectMarksAsync("YEAR(Date (year))", 2010, tableau.SelectionUpdateType.REPLACE);
+    });
+}      
+            </code>                
+            </pre>
+       
+        </section>
+                    
+                    
+    </section>
 	
 
 		<script src="lib/js/head.min.js"></script>
@@ -234,6 +368,7 @@ window.onload= function(){
 			});
 
 		</script>
-
+        
+            </div></div>
 	</body>
 </html>

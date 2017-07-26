@@ -56,11 +56,10 @@
         
         function initViz() {
             var containerDiv = document.getElementById("vizContainer"),
-                url = "https://public.tableau.com/views/RegionalSampleWorkbook/College",
+                url = "http://public.tableau.com/views/RegionalSampleWorkbook/College",
                 options = {
                     "Academic Year": "",
                     hideTabs: true,
-                    hideToolbar: true,
                     onFirstInteractive: function () {
                         listenToMarksSelection();
                     }
@@ -69,7 +68,6 @@
             viz = new tableau.Viz(containerDiv, url, options);
         }
 
-        //Add event listener to the viz variable
         function listenToMarksSelection() {
             viz.addEventListener(tableau.TableauEventName.MARKS_SELECTION, onMarksSelection);
         }
@@ -81,81 +79,46 @@
         function reportSelectedMarks(marks) {
             var html = ""; 
             
-            //Create legend string
             for (var markIndex = 0; markIndex < marks.length; markIndex++) {
                 var pairs = marks[markIndex].getPairs();
                 html += "<b>Mark " + markIndex + ":</b><ul>";
 
                 for (var pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
                     var pair = pairs[pairIndex];
-                    html += "<li> The <b>" + pair.fieldName + "</b>";
-                    html += " is " + pair.formattedValue + "</li>";
+                    html += "<li><b>Field Name:</b> " + pair.fieldName;
+                    html += "<br/><b>Value:</b> " + pair.formattedValue + "</li>";
                 }
+
                 html += "</ul>";
             }
 
             var infoDiv = document.getElementById('markDetails');
             infoDiv.innerHTML = html;
         }
-        function vizFilter(filterName,filterValue,filterType)
-
-        { var sheet=viz.getWorkbook().getActiveSheet();
-
-        if(sheet.getSheetType() === 'worksheet')
-
-        {   
-            if (filterType === "clear"){
-                sheet.clearFilterAsync(filterName);
-            }
-            sheet.applyFilterAsync(filterName,filterValue,filterType);
-        }
-         else
-         {
-               worksheetArray = sheet.getWorksheets();
-               for(var i =0; i < worksheetArray.length; i++)
-            {
-                worksheetArray[i].applyFilterAsync(filterName,filterValue,filterType);
-
-            }
-        }
-}
-function exportPDF() {
-  viz.showExportPDFDialog();
-}
-function exportImage() {
-  viz.showExportImageDialog();
-} 
-function exportData() {
-  viz.showExportDataDialog();
-}  
     </script>
 
 	<body>
 
 		<div class="reveal">
+
+
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<!-- Insert you slide here -->
                 <section>
                 <h4>JSAPI Selected Marks Demo</h4>
-                    <a href= "index.html#/5/2"><button type="button" >Close</button> </a>
-                    <body onload="initViz();">
-						<div  id="vizContainer" style="width:1100px; height:500px;"></div>
-						<font size = "2" style = "position: absolute;  width:200px; height: 50px; left: -200px; top: 400px;" >
+                    
+
+                    <body onload="initViz3();">
+						<div  id="vizContainer-describe" style="width:800px; height:400px;"></div>
+						<font size = "2" style = "position: absolute;  width:180px; height: 50px; right: 0px; top: 120px;" >
 						<div id="markDetails"  >Information about selected marks displays here.</div></font>
 						</body>
-                    <h6 class="runCode" font = "12px">
-                    <p style = "position:absolute; right: 50 px; top: 50px;">
-                        <a onclick = "exportPDF()"><img src = "img/print.png" style = "width:30px; height: 30px"></a>
-                        <a onclick = "exportData()"><img src = "img/data.png" style = "width:30px; height: 30px"></a>
-                        </p>
-                    <p style = "position: absolute;   left: -150px; top: 60px;" >
-                        <font size = "5">Gender</font><br/> 
-                        <a onclick="vizFilter('Gender','Women','REPLACE')"><img src="img/female.png" style="width:80px;height:80px;"></a><br/> <a onclick="vizFilter('Gender','Men','REPLACE')"><img src="img/male.png" style="width:80px;height:80px;"></a></p></h6>
-
+                 <a href= "index.html#/3/3"><button type="button" >Close</button> </a>
                 </section>
             </div>
             </div>
+        
               
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
